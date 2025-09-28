@@ -21,31 +21,32 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: |
-          npm ci
+        run: npm ci
 
       - name: Run tests
-        run: |
-          npm test
+        run: npm test
 
   release:
     name: Create Release (only on push to main)
     runs-on: ubuntu-latest
     needs: test
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write   # to create a release
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: npm ci
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Make release folder and package app
         run: |
           mkdir -p release
-          # install zip in case runner doesn't have it
           sudo apt-get update -y
           sudo apt-get install -y zip
           zip -r release/app.zip app package.json README.md
@@ -71,4 +72,3 @@ jobs:
           asset_path: ./release/app.zip
           asset_name: app-${{ github.run_number }}.zip
           asset_content_type: application/zip
-
