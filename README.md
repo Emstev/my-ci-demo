@@ -10,9 +10,11 @@ This repo demonstrates a beginner-friendly CI workflow:
    npm ci
 
 2. Run tests:
+   
     npm test
 
-3. Run app locally:
+4. Run app locally:
+   
     npm start
 # then open http://localhost:3000/ and /health
 
